@@ -1,0 +1,13 @@
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+
+# Temp files #
+##############
+*.tmp
+
+# Build directory #
+###################
+build/
+
