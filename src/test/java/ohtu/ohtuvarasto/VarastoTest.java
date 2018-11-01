@@ -33,6 +33,12 @@ public class VarastoTest {
     }
     
     @Test
+    public void virheellisenVarastonSaldoNolla() {
+        Varasto dummy = new Varasto(-20,15);
+        assertEquals(0, dummy.getSaldo(), vertailuTarkkuus);
+    }
+    
+    @Test
     public void virheellinenVarastoSaldoNolla() {
         Varasto dummy = new Varasto(10,-20);
         assertEquals(0, dummy.getSaldo(), vertailuTarkkuus);
