@@ -7,11 +7,14 @@
 ##############
 *.tmp
 
-# Build directory #
+# Build directories #
 ###################
 build/
+NhlStatistics1/build/
 
 # Gradle #
 ##########
 .nb-gradle/
-.gradle
+.gradle/
+NhlStatistics1/.nb-gradle/
+NhlStatistics1/.gradle/
