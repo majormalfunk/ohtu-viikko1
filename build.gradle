@@ -53,5 +53,5 @@ jacocoTestReport {
 }
 
 tasks.withType(Checkstyle) {
-    exclude: ['test/**'] 
+    exclude: 'test/**' 
 }
