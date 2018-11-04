@@ -10,7 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class VarastoTest {
+public class VarastoTest
+{
 
     private Varasto varasto;
     private static final double TARKKUUS = 0.0001;
