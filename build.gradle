@@ -52,3 +52,5 @@ jacocoTestReport {
     }
 }
 
+checkstyleMain.exclude 'test/**'
+
