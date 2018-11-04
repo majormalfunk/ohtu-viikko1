@@ -13,117 +13,122 @@ import static org.junit.Assert.*;
 public class VarastoTest {
 
     private Varasto varasto;
-    private double vertailuTarkkuus = 0.0001;
+    private static final double TARKKUUS = 0.0001;
+    private static final double ISONEG = -20.0;
+    private static final double NORMNEG = -10.0;
+    private static final double ISOPOS = 20.0;
+    private static final double NORMPOS = 10.0;
+    private static final double PIENIPOS = 6.0;
 
     @Before
     public void setUp() {
-        varasto = new Varasto(10);
+        varasto = new Varasto(NORMPOS);
     }
 
     @Test
     public void virheellisenVarastonTilavuusNolla() {
-        Varasto dummy = new Varasto(-20);
-        assertEquals(0, dummy.getTilavuus(), vertailuTarkkuus);
+        Varasto dummy = new Varasto(ISONEG);
+        assertEquals(0, dummy.getTilavuus(), TARKKUUS);
     }
     
     @Test
     public void virheellisenVarastonTilavuusNolla2() {
-        Varasto dummy = new Varasto(-20,0);
-        assertEquals(0, dummy.getTilavuus(), vertailuTarkkuus);
+        Varasto dummy = new Varasto(ISONEG,0);
+        assertEquals(0, dummy.getTilavuus(), TARKKUUS);
     }
     
     @Test
     public void virheellisenVarastonSaldoNolla() {
-        Varasto dummy = new Varasto(-20,15);
-        assertEquals(0, dummy.getSaldo(), vertailuTarkkuus);
+        Varasto dummy = new Varasto(ISONEG,PIENIPOS);
+        assertEquals(0, dummy.getSaldo(), TARKKUUS);
     }
     
     @Test
     public void virheellinenVarastoSaldoNolla() {
-        Varasto dummy = new Varasto(10,-20);
-        assertEquals(0, dummy.getSaldo(), vertailuTarkkuus);
+        Varasto dummy = new Varasto(NORMPOS,ISONEG);
+        assertEquals(0, dummy.getSaldo(), TARKKUUS);
     }
 
     @Test
     public void oikeaAlkusaldoUudellaVarastolla() {
-        Varasto varasto2 = new Varasto(10,5);
-        assertEquals(5, varasto2.getSaldo(), vertailuTarkkuus);
+        Varasto varasto2 = new Varasto(NORMPOS,PIENIPOS);
+        assertEquals(PIENIPOS, varasto2.getSaldo(), TARKKUUS);
     }
 
     @Test
     public void konstruktoriLuoTyhjanVaraston() {
-        assertEquals(0, varasto.getSaldo(), vertailuTarkkuus);
+        assertEquals(0, varasto.getSaldo(), TARKKUUS);
     }
 
     @Test
     public void uudellaVarastollaOikeaTilavuus() {
-        assertEquals(10, varasto.getTilavuus(), vertailuTarkkuus);
+        assertEquals(NORMPOS, varasto.getTilavuus(), TARKKUUS);
     }
 
     @Test
     public void lisaysLisaaSaldoa() {
-        varasto.lisaaVarastoon(8);
+        varasto.lisaaVarastoon(PIENIPOS);
 
         // saldon pitäisi olla sama kun lisätty määrä
-        assertEquals(8, varasto.getSaldo(), vertailuTarkkuus);
+        assertEquals(PIENIPOS, varasto.getSaldo(), TARKKUUS);
     }
 
     @Test
     public void lisaysLisaaPienentaaVapaataTilaa() {
-        varasto.lisaaVarastoon(8);
+        varasto.lisaaVarastoon(PIENIPOS);
 
-        // vapaata tilaa pitäisi vielä olla tilavuus-lisättävä määrä eli 2
-        assertEquals(2, varasto.paljonkoMahtuu(), vertailuTarkkuus);
+        // vapaata tilaa pitäisi vielä olla tilavuus-lisättävä määrä eli 4
+        assertEquals(NORMPOS-PIENIPOS, varasto.paljonkoMahtuu(), TARKKUUS);
     }
 
     @Test
     public void ottaminenPalauttaaOikeanMaaran() {
-        varasto.lisaaVarastoon(8);
+        varasto.lisaaVarastoon(NORMPOS);
 
-        double saatuMaara = varasto.otaVarastosta(2);
+        double saatuMaara = varasto.otaVarastosta(PIENIPOS);
 
-        assertEquals(2, saatuMaara, vertailuTarkkuus);
+        assertEquals(PIENIPOS, saatuMaara, TARKKUUS);
     }
 
     @Test
     public void ottaminenLisaaTilaa() {
-        varasto.lisaaVarastoon(8);
+        varasto.lisaaVarastoon(NORMPOS);
 
-        varasto.otaVarastosta(2);
+        varasto.otaVarastosta(PIENIPOS);
 
-        // varastossa pitäisi olla tilaa 10 - 8 + 2 eli 4
-        assertEquals(4, varasto.paljonkoMahtuu(), vertailuTarkkuus);
+        // varastossa pitäisi olla tilaa 10-10+6  =6
+        assertEquals(PIENIPOS, varasto.paljonkoMahtuu(), TARKKUUS);
     }
     
     @Test
     public void eiAnnaLisataNegatiivistaMaaraaVarastoon() {
-        varasto.lisaaVarastoon(-10.0);
-        assertEquals(0.0, varasto.getSaldo(), vertailuTarkkuus);
+        varasto.lisaaVarastoon(NORMNEG);
+        assertEquals(0.0, varasto.getSaldo(), TARKKUUS);
     }
     
     @Test
     public void liikaaTavaraaVarastoon() {
-        varasto.lisaaVarastoon(20.0);
+        varasto.lisaaVarastoon(ISOPOS);
         // Varastoon pitäisi mahtua vain 10.0
-        assertEquals(10.0, varasto.getSaldo(), vertailuTarkkuus);
+        assertEquals(NORMPOS, varasto.getSaldo(), TARKKUUS);
     }
 
     @Test
     public void eiOtaVarastostaEnemmanKuinSiellaOn() {
-        varasto.lisaaVarastoon(5.0);
-        double otettiin = varasto.otaVarastosta(10.0);
-        assertEquals(5.0, otettiin, vertailuTarkkuus);
+        varasto.lisaaVarastoon(PIENIPOS);
+        double otettiin = varasto.otaVarastosta(NORMPOS);
+        assertEquals(PIENIPOS, otettiin, TARKKUUS);
     }
     
     @Test
     public void eiAnnaOttaaNegatiivistaMaaraaVarastosta() {
-        double otettiin = varasto.otaVarastosta(-10.0);
-        assertEquals(0.0, otettiin, vertailuTarkkuus);
+        double otettiin = varasto.otaVarastosta(ISONEG);
+        assertEquals(0.0, otettiin, TARKKUUS);
     }
     
     @Test
     public void varastonMerkkijonoEsitysOikein() {
-        varasto.lisaaVarastoon(6.0);
+        varasto.lisaaVarastoon(PIENIPOS);
         assertEquals("saldo = 6.0, vielä tilaa 4.0", varasto.toString());
     }
 }
