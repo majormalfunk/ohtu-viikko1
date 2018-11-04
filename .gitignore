@@ -11,6 +11,8 @@
 ###################
 build/
 NhlStatistics1/build/
+NhlStatistics1/.classpath
+NhlStatistics1/bin/
 
 # Gradle #
 ##########

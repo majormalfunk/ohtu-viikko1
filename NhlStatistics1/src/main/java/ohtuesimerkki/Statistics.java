@@ -8,11 +8,11 @@ import java.util.List;
 public class Statistics {
 
     private List<Player> players;
-    private Reader reader;
+    //private Reader reader;
 
     public Statistics(Reader reader) {
-        this.reader = reader;
-        players = reader.getPlayers();       
+        Reader rdr = reader;
+        players = rdr.getPlayers();       
     }
 
     public Player search(String name) {
@@ -41,10 +41,10 @@ public class Statistics {
         Collections.sort(players);
         ArrayList<Player> topScorers = new ArrayList<Player>();
         Iterator<Player> playerIterator = players.iterator();
-        
-        while (howMany > 0) {
+        int counter = howMany;
+        while (counter > 0) {
             topScorers.add(playerIterator.next());
-            howMany--;
+            counter--;
         }
         
         
